@@ -34,6 +34,10 @@ const initialBallPosition = () => {
   }  
 }
 
+const initialPlayerPosition = () => {
+  return (GAME_HEIGHT - PLAYER_HEIGHT) / 2;
+}
+
 const initialBallVelocity = () => {
   return {
     x: Math.random() > 0.5 ? BALL_BASE_VELOCITY : BALL_BASE_VELOCITY * -1,
@@ -64,8 +68,8 @@ const drawBall = (x: number, y: number) => {
 }
 
 const gameState = {
-  playerA: 0,
-  playerB: 0,
+  playerA: initialPlayerPosition(),
+  playerB: initialPlayerPosition(),
   playerAScore: 0,
   playerBScore: 0,
   status: 'wait',
@@ -85,6 +89,13 @@ function onKeyUp(this: GlobalEventHandlers, event: KeyboardEvent) {
 
 window.addEventListener('keydown', onKeyDown, true);
 window.addEventListener('keyup', onKeyUp, true);
+
+const resetRound = () => {
+  gameState.status = 'result';
+  gameState.ballPosition = initialBallPosition();
+  gameState.playerA = initialPlayerPosition();
+  gameState.playerB = initialPlayerPosition();
+}
 
 const loop = (timestamp: number) => {
   const update = timestamp - gameState.lastRender;
@@ -113,12 +124,10 @@ const loop = (timestamp: number) => {
   // Game Window Collision
   if (gameState.ballPosition.x >= GAME_WIDTH - BALL_SIZE) {
     gameState.playerBScore += 1;
-    gameState.status = 'result';
-    gameState.ballPosition = initialBallPosition();
+    resetRound();
   } else if (gameState.ballPosition.x <= 0) {
     gameState.playerAScore += 1;
-    gameState.status = 'result';
-    gameState.ballPosition = initialBallPosition();
+    resetRound();
   }
 
   if (gameState.ballPosition.y >= GAME_HEIGHT - BALL_SIZE || gameState.ballPosition.y <= 0) {
