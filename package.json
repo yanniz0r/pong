@@ -1,0 +1,12 @@
+{
+  "name": "pong",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -w"
+  },
+  "devDependencies": {
+    "typescript": "^3.3.4000"
+  }
+}
