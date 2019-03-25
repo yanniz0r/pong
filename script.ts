@@ -6,10 +6,10 @@ const GAME_HEIGHT = 600;
 const PLAYER_HEIGHT = GAME_HEIGHT / 10;
 const PLAYER_WIDTH = 10;
 const PLAYER_FRAME_DISTANCE = 5;
-const PLAYER_VELOCITY = 0.2;
+const PLAYER_VELOCITY = 0.4;
 
 const BALL_SIZE = 10;
-const BALL_BASE_VELOCITY = 0.15;
+const BALL_BASE_VELOCITY = 0.25;
 
 gameCanvas.style.background = 'black';
 gameCanvas.width = GAME_WIDTH;
@@ -41,7 +41,7 @@ const initialPlayerPosition = () => {
 const initialBallVelocity = () => {
   return {
     x: Math.random() > 0.5 ? BALL_BASE_VELOCITY : BALL_BASE_VELOCITY * -1,
-    y: Math.random() > 0.5 ? BALL_BASE_VELOCITY : BALL_BASE_VELOCITY * -1
+    y: (Math.random() > 0.5 ? BALL_BASE_VELOCITY : BALL_BASE_VELOCITY * -1) * 0.25
   }
 }
 
