@@ -10,6 +10,7 @@ const PLAYER_VELOCITY = 0.4;
 
 const BALL_SIZE = 10;
 const BALL_BASE_VELOCITY = 0.25;
+const BALL_VELOCITY_ACCELERATION = 0.00001;
 
 gameCanvas.style.background = 'black';
 gameCanvas.width = GAME_WIDTH;
@@ -95,11 +96,20 @@ const resetRound = () => {
   gameState.ballPosition = initialBallPosition();
   gameState.playerA = initialPlayerPosition();
   gameState.playerB = initialPlayerPosition();
+  gameState.ballVelocity = initialBallVelocity();
 }
 
 const loop = (timestamp: number) => {
   const update = timestamp - gameState.lastRender;
   clearFrame();
+
+  // Ball acceleration
+  if (gameState.status === 'play') {
+    let xFactor = gameState.ballVelocity.x < 0 ? -1 : 0;
+    let yFactor = gameState.ballVelocity.y < 0 ? -1 : 0;
+    gameState.ballVelocity.x += BALL_VELOCITY_ACCELERATION * update * xFactor;
+    gameState.ballVelocity.y += BALL_VELOCITY_ACCELERATION * update * yFactor;
+  }
 
   // Player A
   if (gameState.pressedKeys.get('ArrowDown')) {
