@@ -54,16 +54,6 @@ const drawStatus = (text: string) => {
 }
 
 const drawBall = (x: number, y: number) => {
-  if (x < 0) {
-    x = 0;
-  } else if (x > GAME_WIDTH - BALL_SIZE) {
-    x = GAME_WIDTH - BALL_SIZE;
-  }
-  if (y < 0) {
-    y = 0;
-  } else if (y > GAME_HEIGHT - BALL_SIZE) {
-    y = GAME_HEIGHT - BALL_SIZE;
-  }
   context.fillStyle = 'white';
   context.fillRect(x, y, BALL_SIZE, BALL_SIZE);
 }
@@ -111,13 +101,25 @@ const loop = (timestamp: number) => {
     gameState.ballVelocity.y += BALL_VELOCITY_ACCELERATION * update * yFactor;
   }
 
+  const movedDistance = PLAYER_VELOCITY * update;
+  
   // Player A
   if (gameState.pressedKeys.get('ArrowDown')) {
     // Move Down
-    gameState.playerA += PLAYER_VELOCITY * update;
+    const maxYPosition = GAME_HEIGHT - PLAYER_HEIGHT;
+    if (gameState.playerA + movedDistance < maxYPosition) {
+      gameState.playerA += movedDistance
+    } else {
+      gameState.playerA = maxYPosition;
+    }
   } else if (gameState.pressedKeys.get('ArrowUp')) {
     // Move Up
-    gameState.playerA -= PLAYER_VELOCITY * update;
+    const minYPosition = 0;
+    if (gameState.playerA - movedDistance > minYPosition) {
+      gameState.playerA -= movedDistance
+    } else {
+      gameState.playerA = minYPosition;
+    }
   }
 
   if (gameState.pressedKeys.get('Enter')) {
@@ -126,9 +128,21 @@ const loop = (timestamp: number) => {
 
   // Player B
   if (gameState.pressedKeys.get('s')) {
-    gameState.playerB += PLAYER_VELOCITY * update;
+    // Move Down
+    const maxYPosition = GAME_HEIGHT - PLAYER_HEIGHT;
+    if (gameState.playerB + movedDistance < maxYPosition) {
+      gameState.playerB += movedDistance
+    } else {
+      gameState.playerB = maxYPosition;
+    }
   } else if (gameState.pressedKeys.get('w')) {
-    gameState.playerB -= PLAYER_VELOCITY * update;
+    // Move Up
+    const minYPosition = 0;
+    if (gameState.playerB - movedDistance > minYPosition) {
+      gameState.playerB -= movedDistance
+    } else {
+      gameState.playerB = minYPosition;
+    }
   }
 
   // Game Window Collision
