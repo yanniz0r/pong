@@ -1,4 +1,5 @@
 const gameCanvas = document.getElementById('game') as HTMLCanvasElement;
+const fpsDisplay = document.getElementById('fps') as HTMLSpanElement;
 
 const GAME_WIDTH = 800;
 const GAME_HEIGHT = 600;
@@ -91,6 +92,7 @@ const resetRound = () => {
 
 const loop = (timestamp: number) => {
   const update = timestamp - gameState.lastRender;
+  const fps = 1000 / update;
   clearFrame();
 
   // Ball acceleration
@@ -187,6 +189,9 @@ const loop = (timestamp: number) => {
   } else if (gameState.status === 'result') {
     drawStatus(`${gameState.playerAScore}:${gameState.playerBScore}`)
   }
+
+  // Show fps
+  fpsDisplay.textContent = `${Math.ceil(fps)} Frames per second`;
 
   gameState.lastRender = timestamp;
   window.requestAnimationFrame(loop);
